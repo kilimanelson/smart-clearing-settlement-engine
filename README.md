@@ -7,7 +7,6 @@ Consider a simple example:
 - Mike owes Rachel $400.
 
 Instead of processing three separate payments, we can calculate each participant's net position and consolidate the obligations into fewer transactions.
-
 This same challenge exists at a much larger scale in financial systems, where banks and payment institutions must clear and settle thousands or millions of transactions while managing liquidity requirements and settlement risk.
 
 ## The Solution

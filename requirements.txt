@@ -1,0 +1,14 @@
+fastapi>=0.115
+joblib>=1.4
+numpy>=1.26
+pandas>=2.2
+plotly>=5.24
+psycopg[binary]>=3.2
+pydantic>=2.9
+pydantic-settings>=2.6
+scikit-learn>=1.5
+scipy>=1.13
+sqlalchemy>=2.0
+streamlit>=1.40
+uvicorn>=0.32
+xgboost>=2.1

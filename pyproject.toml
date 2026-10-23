@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smart-clearing-settlement-engine"
+version = "0.1.0"
+description = "Educational simulation of card-payment deferred net settlement, shortfall prediction, and liquidity buffers."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Smart Clearing Settlement Engine contributors" }]
+license = { text = "MIT" }
+dependencies = [
+    "fastapi>=0.115",
+    "joblib>=1.4",
+    "numpy>=1.26",
+    "pandas>=2.2",
+    "plotly>=5.24",
+    "psycopg[binary]>=3.2",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    "scikit-learn>=1.5",
+    "scipy>=1.13",
+    "sqlalchemy>=2.0",
+    "streamlit>=1.40",
+    "uvicorn>=0.32",
+    "xgboost>=2.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "httpx>=0.27",
+    "pytest>=8.3",
+    "ruff>=0.7",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/smart_clearing/api.py" = ["B008"]
+"src/smart_clearing/app.py" = ["E402"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

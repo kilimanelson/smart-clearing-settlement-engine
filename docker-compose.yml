@@ -1,0 +1,46 @@
+# Local simulation stack. The database password is a development placeholder.
+# This compose file does not connect to a payment network.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-scse}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_DB: ${POSTGRES_DB:-scse}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-scse} -d ${POSTGRES_DB:-scse}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - scse_pg:/var/lib/postgresql/data
+
+  api:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  dashboard:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "8501:8501"
+    command: >
+      streamlit run src/smart_clearing/app.py
+      --server.address=0.0.0.0
+      --server.port=8501
+      --server.headless=true
+    depends_on:
+      - api
+
+volumes:
+  scse_pg:

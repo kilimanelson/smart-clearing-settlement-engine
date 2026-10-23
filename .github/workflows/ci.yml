@@ -1,0 +1,38 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: scse
+          POSTGRES_PASSWORD: change-me
+          POSTGRES_DB: scse
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U scse -d scse"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      SCSE_POSTGRES_TEST_URL: postgresql+psycopg://scse:change-me@localhost:5432/scse
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install package and development tools
+        run: pip install -e ".[dev]"
+      - name: Ruff
+        run: |
+          ruff check src tests scripts
+          ruff format --check src tests scripts
+      - name: Pytest
+        run: pytest
